@@ -1,4 +1,4 @@
-import {  NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +15,6 @@ import { SuccessComponent } from './products/dialog/success/success.component';
 
 //Angular material modules
 import { AngularMaterialModule } from './modules/angular-material.module';
-;
 import { CommonModule } from '@angular/common';
 
 import { ProductsModule } from './products/products.module';
@@ -26,28 +25,28 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { ProductState } from './store/state/product.state';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        PageNotFoundComponent,
-        ErrorComponent,
-        SuccessComponent,
-    ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        CommonModule,
-        HttpClientModule,
-        AppRoutingModule,
-        AngularMaterialModule,
-        ProductsModule,
-         //NGXS
+  declarations: [
+    AppComponent,
+    PageNotFoundComponent,
+    ErrorComponent,
+    SuccessComponent,
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    HttpClientModule,
+    AppRoutingModule,
+    AngularMaterialModule,
+    ProductsModule,
+    //NGXS
     NgxsModule.forRoot([ProductState]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    ],
-    providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
-    ],
-    bootstrap: [AppComponent]
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

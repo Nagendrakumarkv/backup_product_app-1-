@@ -14,7 +14,10 @@ import { ProductService } from '../../product.service';
 import { ErrorComponent } from '../error/error.component';
 import { SuccessComponent } from '../success/success.component';
 import { Store, UpdateState } from '@ngxs/store';
-import { AddProduct, UpdateProduct } from '../../../store/actions/product.action';
+import {
+  AddProduct,
+  UpdateProduct,
+} from '../../../store/actions/product.action';
 
 @Component({
   selector: 'app-dialog',
@@ -32,7 +35,7 @@ export class DialogComponent implements OnInit {
     private dialogRef: MatDialogRef<DialogComponent>,
     private dialog: MatDialog,
     private productService: ProductService,
-    private store:Store
+    private store: Store
   ) {}
 
   ngOnInit(): void {
@@ -47,7 +50,9 @@ export class DialogComponent implements OnInit {
 
     if (this.editData) {
       this.actionBtn = 'Upadte';
-      this.productForm.controls['productName'].setValue(this.editData.productName);
+      this.productForm.controls['productName'].setValue(
+        this.editData.productName
+      );
       this.productForm.controls['category'].setValue(this.editData.category);
       this.productForm.controls['date'].setValue(this.editData.date);
       this.productForm.controls['freshness'].setValue(this.editData.freshness);

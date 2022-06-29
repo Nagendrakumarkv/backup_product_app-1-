@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private productService: ProductService,
-    private store:Store
+    private store: Store
   ) {}
 
   ngOnInit(): void {
@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/auth/login']);
   }
   getAllProducts() {
-        this.store.dispatch(new GetProduct());
+    this.store.dispatch(new GetProduct());
   }
   getRegisteredUserInfo() {
     this.authService.geRegisteredtUserInfo().subscribe((data) => {
