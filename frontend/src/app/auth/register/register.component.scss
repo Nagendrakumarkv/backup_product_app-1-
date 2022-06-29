@@ -1,0 +1,26 @@
+mat-card {
+  max-width: 400px;
+  margin: 2em auto;
+  text-align: center;
+}
+mat-form-field {
+  display: block;
+}
+.example-radio-group {
+  display: flex;
+  flex-direction: row;
+  margin: 15px 0;
+  align-items: flex-start;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+.login{
+  color:blue;
+}
+.login:hover{
+  text-decoration: underline;
+  cursor:pointer;
+  cursor: hand;
+}

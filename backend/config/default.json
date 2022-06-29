@@ -1,0 +1,9 @@
+{
+  "PRODUCT": {
+    "dbConfig": {
+      "host": "localhost",
+      "port": 9000,
+      "dbName": "mongodb+srv://NAGA:Pqcz5VoyRUxNiMc0@product.h3jh6.mongodb.net/?retryWrites=true&w=majority"
+    }
+  }
+}

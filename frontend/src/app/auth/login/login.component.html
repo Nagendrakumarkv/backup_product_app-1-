@@ -1,0 +1,55 @@
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <h2>Log In</h2>
+      <!-- <h3 *ngIf="isLogginError" style="color: red">{{ loginError }}</h3> -->
+      <mat-form-field class="full-width-input">
+        <input matInput placeholder="Email" formControlName="email" required />
+        <mat-error *ngFor="let validation of login_validation_messages.email">
+          <mat-error
+            class="error-message"
+            *ngIf="
+              loginForm.get('email')?.hasError(validation.type) &&
+              (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
+            "
+            >{{ validation.message }}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input">
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          required
+        />
+        <mat-error
+          *ngFor="let validation of login_validation_messages.password"
+        >
+          <mat-error
+            class="error-message"
+            *ngIf="
+              loginForm.get('password')?.hasError(validation.type) &&
+              (loginForm.get('password')?.dirty ||
+                loginForm.get('password')?.touched)
+            "
+            >{{ validation.message }}</mat-error
+          >
+        </mat-error>
+      </mat-form-field>
+      <button
+        style="margin-top: 20px"
+        [disabled]="!loginForm.valid"
+        mat-raised-button
+        color="primary"
+      >
+        Login
+      </button>
+    </form>
+    <h5>
+      If you are not registered yet?
+      <span routerLink="/auth/register" class="register">register here</span>
+    </h5>
+  </mat-card-content>
+</mat-card>
