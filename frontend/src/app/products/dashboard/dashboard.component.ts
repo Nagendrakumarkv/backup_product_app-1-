@@ -12,6 +12,10 @@ import { SuccessComponent } from '../dialog/success/success.component';
 import { ProductService } from '../product.service';
 import { ErrorComponent } from '../dialog/error/error.component';
 
+import { Select, Store } from '@ngxs/store';
+import { DeleteProduct, GetProduct } from '../../store/actions/product.action';
+import { ProductState } from '../../store/state/product.state';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -33,19 +37,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   userId!: string;
   userIsAuthenticated = false;
 
+  @Select(ProductState.getProductList) products$!: Observable<Product[]>;
+  @Select(ProductState.getProductsLoaded) produtsLoaded$!: Observable<boolean>;
+
   productLoadedSub!: Subscription;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  products$: Observable<Product[]> | undefined;
   error$: Observable<String> | undefined;
 
   constructor(
     private dialog: MatDialog,
     private router: Router,
     private authService: AuthService,
-    private productService: ProductService
+    private productService: ProductService,
+    private store:Store
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +60,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.userIsAuthenticated = this.authService.getUserIsAuthenticated();
     this.userId = this.authService.getUserId();
+
+    this.products$.subscribe((res) => {
+      this.dataSource = new MatTableDataSource(res);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
 
     this.getAllProducts();
   }
@@ -65,19 +78,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/auth/login']);
   }
   getAllProducts() {
-    this.productService.getAllProducts().subscribe({
-      next: (res) => {
-        this.dataSource = new MatTableDataSource(res);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      },
-      error: () => {
-        let productGetUnsuccessfull = 'Product Added Unsuccessfull';
-        this.dialog.open(ErrorComponent, {
-          data: { message: productGetUnsuccessfull },
-        });
-      },
-    });
+        this.store.dispatch(new GetProduct());
   }
   getRegisteredUserInfo() {
     this.authService.geRegisteredtUserInfo().subscribe((data) => {
@@ -120,21 +121,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   deleteProduct(id: any) {
     if (confirm('Are You Sure You want to Delete the Product?')) {
-      this.productService.deleteProduct(id).subscribe({
-        next: (res) => {
-          let productDeletedSuccessfull = 'Product Deleted Successfully';
-          this.dialog.open(SuccessComponent, {
-            data: { message: productDeletedSuccessfull },
-          });
-          this.getAllProducts();
-        },
-        error: () => {
-          let productDeletedUnsuccessfull = 'Product Deleted Unsuccessfull';
-          this.dialog.open(ErrorComponent, {
-            data: { message: productDeletedUnsuccessfull },
-          });
-        },
+      this.store.dispatch(new DeleteProduct(id));
+      let productDeletedSuccessfull = 'Product Deleted Successfully';
+      this.dialog.open(SuccessComponent, {
+        data: { message: productDeletedSuccessfull },
       });
+      this.getAllProducts();
     }
   }
   applyFilter(event: Event) {

@@ -20,6 +20,11 @@ import { CommonModule } from '@angular/common';
 
 import { ProductsModule } from './products/products.module';
 
+//NGXS
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { ProductState } from './store/state/product.state';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -34,7 +39,10 @@ import { ProductsModule } from './products/products.module';
         HttpClientModule,
         AppRoutingModule,
         AngularMaterialModule,
-        ProductsModule
+        ProductsModule,
+         //NGXS
+    NgxsModule.forRoot([ProductState]),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
