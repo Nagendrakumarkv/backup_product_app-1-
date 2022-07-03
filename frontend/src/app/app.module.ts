@@ -15,9 +15,23 @@ import { SuccessComponent } from './products/dialog/success/success.component';
 
 //Angular material modules
 import { AngularMaterialModule } from './modules/angular-material.module';
-;
+
+//NGRX
+import { StoreModule } from '@ngrx/store';
+
+import {
+  StoreRouterConnectingModule,
+  routerReducer,
+  RouterStateSerializer
+} from "@ngrx/router-store";
+
+import { CustomSerializer } from "./shared/utils";
 import { CommonModule } from '@angular/common';
 
+
+
+import { EffectsModule } from "@ngrx/effects";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { ProductsModule } from './products/products.module';
 
 @NgModule({
@@ -28,9 +42,26 @@ import { ProductsModule } from './products/products.module';
         SuccessComponent,
     ],
     imports: [
+        // BrowserModule,
+        // AppRoutingModule,
+        // BrowserAnimationsModule,
+        // ReactiveFormsModule,
+        // FormsModule,
+        // HttpClientModule,
+        // AngularMaterialModule,
+
+        // //NGRX
+        // StoreModule.forRoot({}),
+
         BrowserModule,
         BrowserAnimationsModule,
         CommonModule,
+        StoreModule.forRoot({
+          router: routerReducer
+        }),
+        StoreRouterConnectingModule.forRoot({ stateKey: "router" }),
+        StoreDevtoolsModule.instrument(),
+        EffectsModule.forRoot([]),
         HttpClientModule,
         AppRoutingModule,
         AngularMaterialModule,
@@ -38,7 +69,9 @@ import { ProductsModule } from './products/products.module';
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+        { provide: RouterStateSerializer, useClass: CustomSerializer}
     ],
     bootstrap: [AppComponent]
 })

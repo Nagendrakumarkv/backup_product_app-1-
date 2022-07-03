@@ -9,8 +9,10 @@ import { Observable, Subscription } from 'rxjs';
 import { Product } from '../models/product.model';
 import { AuthService } from '../../auth/auth.service';
 import { SuccessComponent } from '../dialog/success/success.component';
-import { ProductService } from '../product.service';
-import { ErrorComponent } from '../dialog/error/error.component';
+
+import { Store, State, select } from '@ngrx/store';
+import * as productActions from '../state/product.actions';
+import * as fromProduct from '../state/product.reducer';
 
 @Component({
   selector: 'app-dashboard',
@@ -45,7 +47,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private authService: AuthService,
-    private productService: ProductService
+    private store: Store<fromProduct.AppState>
   ) {}
 
   ngOnInit(): void {
@@ -65,19 +67,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/auth/login']);
   }
   getAllProducts() {
-    this.productService.getAllProducts().subscribe({
+    this.store.dispatch(new productActions.LoadProducts());
+    this.products$ = this.store.pipe(select(fromProduct.getProducts));
+    console.log(this.products$);
+    this.products$.subscribe({
       next: (res) => {
+        console.log(res);
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
-      error: () => {
-        let productGetUnsuccessfull = 'Product Added Unsuccessfull';
-        this.dialog.open(ErrorComponent, {
-          data: { message: productGetUnsuccessfull },
-        });
-      },
     });
+    this.error$ = this.store.pipe(select(fromProduct.getError));
   }
   getRegisteredUserInfo() {
     this.authService.geRegisteredtUserInfo().subscribe((data) => {
@@ -106,6 +107,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   editProduct(row: any) {
+    this.store.dispatch(new productActions.LoadProduct(row._id));
     this.dialog
       .open(DialogComponent, {
         width: '30%',
@@ -120,21 +122,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   deleteProduct(id: any) {
     if (confirm('Are You Sure You want to Delete the Product?')) {
-      this.productService.deleteProduct(id).subscribe({
-        next: (res) => {
-          let productDeletedSuccessfull = 'Product Deleted Successfully';
-          this.dialog.open(SuccessComponent, {
-            data: { message: productDeletedSuccessfull },
-          });
-          this.getAllProducts();
-        },
-        error: () => {
-          let productDeletedUnsuccessfull = 'Product Deleted Unsuccessfull';
-          this.dialog.open(ErrorComponent, {
-            data: { message: productDeletedUnsuccessfull },
-          });
-        },
+      this.store.dispatch(new productActions.DeleteProduct(id));
+      let productDeletedSuccessfull = 'Product Deleted Successfully';
+      this.dialog.open(SuccessComponent, {
+        data: { message: productDeletedSuccessfull },
       });
+      this.getAllProducts();
     }
   }
   applyFilter(event: Event) {
