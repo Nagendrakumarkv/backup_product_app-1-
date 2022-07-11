@@ -26,6 +26,10 @@ const userSchema=new mongoose.Schema({
   confirmPassword: {
     type:String,
     required:false
+  },
+  resetLink:{
+    data:String,
+    default:''
   }
 })
 userSchema.plugin(uniqueValidator);

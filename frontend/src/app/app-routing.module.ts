@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthGuard } from './auth/auth-guard';
 
+
 const routes: Routes = [
   // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   // {path:'dashboard/:id',component:DashboardComponent,canActivate:[AuthGuard]},
@@ -20,7 +21,9 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then((x) => x.AuthModule),
   },
 
-  { path: '**', component: PageNotFoundComponent, canActivate: [AuthGuard] },
+
+  // { path: '**', component: PageNotFoundComponent, canActivate: [AuthGuard] },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

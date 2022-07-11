@@ -77,7 +77,7 @@ export class RegisterComponent implements OnInit {
         .subscribe({
           next: (res: any) => {
             console.log(res);
-            let successFullRegister = 'successfully registered';
+            let successFullRegister = res.message;
             this.dialog.open(SuccessComponent, {
               data: { message: successFullRegister },
             });

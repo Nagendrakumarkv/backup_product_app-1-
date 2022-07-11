@@ -1,0 +1,30 @@
+<!-- <button mat-raised-button color="primary" class="activate-btn" (click)="activateEmail()">Activate</button> -->
+
+<!-- <label mat-dialog-title>Activation of your account</label>
+<div mat-dialog-content>
+<p>Are you sure to activate your account click <b>Activate</b> button or click <b>Cancel</b> button to cancel the activation of your activation</p>
+</div>
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close="">Cancel</button>
+  <button mat-raised-button color="primary" (click)="activateEmail()">
+    Activate
+  </button>
+</div> -->
+
+<mat-card>
+  <mat-card-content>
+    <label mat-dialog-title>Activation of your account</label>
+    <div mat-dialog-content>
+      <p>
+        Are you sure to activate your account click <b>Activate</b> button or
+        click <b>Cancel</b> button to cancel the activation of your activation
+      </p>
+    </div>
+    <div mat-dialog-actions [align]="'start'">
+      <button mat-raised-button color="warn" mat-dialog-close="" (click)="cancelActivate()" style="margin-right: 10px;">Cancel</button>
+      <button mat-raised-button color="primary" (click)="activateEmail()">
+        Activate
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

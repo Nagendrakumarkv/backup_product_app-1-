@@ -16,6 +16,9 @@ export class AuthService {
 
   signupUrl = environment.apiUrl + '/user/signup';
   loginUrl = environment.apiUrl + '/user/login';
+  activateEmailUrl=environment.apiUrl+'/user/email-activate';
+  forgotPasswordUrl=environment.apiUrl+'/user/forgot-password';
+  resetPasswordUrl=environment.apiUrl+'/user/reset-password'
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -116,5 +119,18 @@ export class AuthService {
 
   geRegisteredtUserInfo() {
     return this.http.get(this.signupUrl);
+  }
+  postActivateEmail(token:string){
+    console.log(token)
+    return this.http.post<any>(this.activateEmailUrl,{token:token});
+  }
+  //forgot password
+  forgotPassword(email:any){
+   return this.http.put<any>(this.forgotPasswordUrl,{email:email})
+  }
+
+  //reset password
+  resetPassword(token:any,newPassword:any){
+   return this.http.put<any>(this.resetPasswordUrl,{resetLink:token,newPassword:newPassword})
   }
 }

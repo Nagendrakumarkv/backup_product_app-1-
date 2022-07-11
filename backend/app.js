@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const config = require("config");
 const bodyParser=require('body-parser')
-
+require('dotenv').config()
 // database connection to mongodb compass
 //  const url='mongodb://localhost/ProductDBex'
 
@@ -14,18 +14,18 @@ app.use(cors());
 const dbConfig = config.get('PRODUCT.dbConfig.dbName');
 
 mongoose.connect(dbConfig, { useNewUrlParser: true})
-  // .then(() => {
-  //   console, log("connected to database");
-  // })
-  // .catch((err) => {
-  //   console.log("not connected to database", err);
-  // });
+  .then(() => {
+    console.log("connected to database");
+  })
+  .catch((err) => {
+    console.log("not connected to database", err);
+  });
 
 const con = mongoose.connection;
 
-con.on("open", () => {
-  console.log("connected");
-});
+// con.on("open", () => {
+//   console.log("connected");
+// });
 
 app.use(express.json());
 
@@ -51,8 +51,8 @@ app.use((req, res, next) => {
 app.use("/products", productRouter);
 app.use("/user", userRouter);
 
-const PORT = process.env.PORT || 9000;
+const port = process.env.PORT || 9000;
 
-app.listen(PORT, () => {
-  console.log("server started");
+app.listen(port, () => {
+  console.log(`server started running on port ${port}`);
 });

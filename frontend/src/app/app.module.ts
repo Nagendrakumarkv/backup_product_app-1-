@@ -25,7 +25,7 @@ import { ProductsModule } from './products/products.module';
         AppComponent,
         PageNotFoundComponent,
         ErrorComponent,
-        SuccessComponent,
+        SuccessComponent
     ],
     imports: [
         BrowserModule,
